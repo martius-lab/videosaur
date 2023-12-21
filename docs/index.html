@@ -7,7 +7,7 @@
   <meta name="description" content="Object-centric Representations from Real-World Videos">
   <meta property="og:title" content="VideoSAUR"/>
   <meta property="og:description" content="Object-centric Representations from Real-World Videos"/>
-  <meta property="og:url" content="URL OF THE WEBSITE"/>
+  <meta property="og:url" content="https://martius-lab.github.io/videosaur"/>
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
   <meta property="og:image" content="https://zadaianchuk.github.io/videosaur/static/images/sim_loss-1.png" />
   <meta property="og:image:width" content="1200"/>
@@ -45,35 +45,39 @@
   <script src="https://zadaianchuk.github.io/videosaur/static/js/bulma-slider.min.js"></script>
   <script src="https://zadaianchuk.github.io/videosaur/static/js/index.js"></script>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.12.0/cdn/components/copy-button/copy-button.js"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-  <div class="navbar-menu">
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-        <a class="navbar-link">
-          More Research
-        </a>
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://dinosaur-paper.github.io">
-            DINOSAUR
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1;  justify-content: center;">
+        
+  
+        <!-- Dropdown Menu -->
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Related Projects
           </a>
+          <div class="navbar-dropdown" style="min-width: 100%; max-width: 100%">
+            <!-- Retaining Original Dropdown Content -->
+            <a class="navbar-item" style="min-width: 100%" href="https://dinosaur-paper.github.io">
+              DINOSAUR (ICRL 2023)
+            </a>
+          </div>
         </div>
       </div>
     </div>
-
-  </div>
-</nav>
+  </nav>
   <section class="hero">
     <div class="hero-body">
       <div class="container is-max-desktop">
@@ -246,10 +250,10 @@
 <section class="hero is-small is-light" >
   <div class="container is-max-desktop" >
     <div class="hero-body" style="display: flex; justify-content: space-between;">
-      <div style="width:2000px; height: 250px; overflow: hidden;">
-        <embed type="text/html" src="https://zadaianchuk.github.io/videosaur/static/interactive/cossim_10.html" height="350" width="600"></div>
-        <div style="width:2000px; height: 250px; overflow: hidden;">
-          <embed type="text/html" src="https://zadaianchuk.github.io/videosaur/static/interactive/cossim_50.html" height="350" width="600">
+      <div style="width:600px; height: 250px; overflow: hidden;">
+        <embed type="text/html" src="https://zadaianchuk.github.io/videosaur/static/interactive/cossim_10.html" height="250" width="600"></div>
+        <div style="width:600px; height: 250px; overflow: hidden;">
+          <embed type="text/html" src="https://zadaianchuk.github.io/videosaur/static/interactive/cossim_50.html" height="250" width="600">
         </div>
     </div>
     <h2 class="subtitle has-text-centered">
@@ -352,7 +356,7 @@
     <div class="container content is-max-desktop">
       <h2 class="title is-3">Related Projects</h2>
       <ul>
-        <li><a href="https://arxiv.org/abs/2209.14860">DINOSAUR (ICLR 2023)</a>: real-world object-centric learning for images using self-supervised feature reconstruction</li>
+        <li><a href="https://dinosaur-paper.github.io">DINOSAUR (ICLR 2023)</a>: real-world object-centric learning for images using self-supervised feature reconstruction</li>
       </ul>
     </div>
   </div>
@@ -362,14 +366,17 @@
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>
-          @inproceedings{zadaianchuk2023objectcentric,
-              title={Object-Centric Learning for Real-World Videos by Predicting Temporal Feature Similarities},
-              author={Zadaianchuk, Andrii and Seitzer, Maximilian and Martius, Georg},
-              booktitle={Thirty-seventh Conference on Neural Information Processing Systems (NeurIPS 2023)},
-              year={2023},
-          }
+      <h2 class="title">BibTeX</h2> 
+      
+      <p>
+        If you find this work useful, please cite our paper <sl-copy-button from="bibtex"></sl-copy-button> :
+      <pre id="bibtex"><code>
+@inproceedings{zadaianchuk2023objectcentric,
+    title={Object-Centric Learning for Real-World Videos by Predicting Temporal Feature Similarities},
+    author={Zadaianchuk, Andrii and Seitzer, Maximilian and Martius, Georg},
+    booktitle={Thirty-seventh Conference on Neural Information Processing Systems (NeurIPS 2023)},
+    year={2023},
+}
       </code></pre>
     </div>
 </section>
