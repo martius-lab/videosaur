@@ -5,7 +5,8 @@ from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import torch
-from PIL import ImageColor
+from PIL import ImageColor, Image
+from videosaur.data.transforms import Resize
 
 CMAP_STYLE = "tab"
 
@@ -252,3 +253,91 @@ def generate_color_map(N, normalized=False):
     cmap = cmap / 255 if normalized else cmap
 
     return cmap
+
+def create_grid_frame(frames, grid_size=(2, 6), image_size=(224, 224), padding=2):
+    # Initialize an empty frame with padding
+    grid_frame = np.zeros((grid_size[0] * (image_size[0] + padding) - padding, 
+                           grid_size[1] * (image_size[1] + padding) - padding), dtype=np.float64)
+    
+    for index, frame in enumerate(frames):
+        row = index // grid_size[1]
+        col = index % grid_size[1]
+        start_row = row * (image_size[0] + padding)
+        start_col = col * (image_size[1] + padding)
+        grid_frame[start_row:start_row+image_size[0], start_col:start_col+image_size[1]] = frame
+    
+    return grid_frame
+
+def create_grid_frame_rgb(frames, grid_size=(2, 6), image_size=(224, 224), padding=2):
+    """
+    Create a grid frame from individual RGB frames.
+
+    Args:
+        frames (list of np.ndarray): List of frames, each frame should be of shape (height, width, 3).
+        grid_size (tuple): The grid size as (rows, columns).
+        image_size (tuple): The size of each image in the grid as (height, width).
+        padding (int): The padding size between images in the grid.
+
+    Returns:
+        np.ndarray: An image of the grid.
+    """
+    # Initialize an empty frame with padding for RGB channels
+    grid_frame = np.zeros((
+        grid_size[0] * (image_size[0] + padding) - padding, 
+        grid_size[1] * (image_size[1] + padding) - padding, 
+        3),  # Depth of 3 for RGB
+        dtype=np.float32)
+    
+    for index, frame in enumerate(frames):
+        if frame.ndim < 3:
+            raise ValueError("All frames must have 3 dimensions (height, width, channels)")
+        if frame.shape[2] != 3:
+            raise ValueError("All frames must be RGB with 3 channels")
+        
+        row = index // grid_size[1]
+        col = index % grid_size[1]
+        start_row = row * (image_size[0] + padding)
+        start_col = col * (image_size[1] + padding)
+        end_row = start_row + image_size[0]
+        end_col = start_col + image_size[1]
+        
+        # Check if frame resizing is needed
+        assert frame.shape[:2] == image_size
+        
+        grid_frame[start_row:end_row, start_col:end_col, :] = frame
+    
+    return grid_frame
+
+def mix_inputs_with_masks(inputs, outputs, softmasks=True):
+        
+    b, f, n_slots, hw = outputs["decoder"]["masks"].shape
+    h = int(np.sqrt(hw))
+    w = h
+    masks_video = outputs["decoder"]["masks"].reshape(b, f, n_slots, h, w)
+    assert b == 1, "Batch size must be 1 for visualization"
+    masks_video = masks_video.squeeze(0)
+    
+    #resize masks to 224x224
+    resizer = Resize(224, mode='bilinear')
+    masks_video = resizer(masks_video)
+    
+    if not softmasks:
+        ind = torch.argmax(masks_video, dim=1, keepdim=True)
+        masks_video = torch.zeros_like(masks_video)
+        masks_video.scatter_(1, ind, 1)
+    
+    #create a grid of videos multiplied with binary masks
+    masked_video_frames = []
+    for t in range(masks_video.shape[0]):  # Iterate through each time step
+        frames = [masks_video[t, i] for i in range(masks_video.shape[1])]  # Get all frames for this time step
+        #incule one masks of ones for the original video as first frame
+        frames = [np.ones_like(frames[0])] + frames
+        grid_frame = create_grid_frame(frames)
+        # Optional: Convert grid_frame to RGB if needed
+        grid_frame_rgb = np.repeat(grid_frame[:, :, np.newaxis], 3, axis=2)
+        video = inputs["video_visualization"]
+        video_frames = [video[0, :, t].permute(1,2,0).numpy()  for i in range(masks_video.shape[1]+1)]
+        grid_video = create_grid_frame_rgb(video_frames)
+        masked_video = (grid_video * grid_frame_rgb * 255).astype(np.uint8)
+        masked_video_frames.append(masked_video)
+    return masked_video_frames

@@ -1,0 +1,10 @@
+checkpoint: path/to/videosaur-movi-c.ckpt
+model_config: configs/videosaur/movi_c.yml
+input:
+  path: docs/static/videos/video.mp4
+  transforms:
+    use_movi_normalization: true
+    type: video
+    input_size: 224
+output:
+  save_video_path: docs/static/videos/video_masks.mp4

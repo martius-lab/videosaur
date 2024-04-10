@@ -27,6 +27,7 @@ matplotlib = {version = "^3.6.2", optional=true}
 moviepy = "^1.0.3"
 pycocotools = {version = "^2.0.6", optional=true}
 requests = "^2.31.0"
+av = "^12.0.0"
 
 [tool.poetry.extras]
 tensorflow = ["tensorflow-cpu", "tensorflow_datasets"]
