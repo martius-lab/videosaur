@@ -76,9 +76,9 @@ This configuration yields improved results compared to the DINOSAUR model in the
 due to using DINOv2 pre-trained features).
 Note that there might be minor differences in the metrics, as the numbers here are computed for 224x224 masks, compared to 320x320 masks in the DINOSAUR paper.
 
-| Dataset     | Model Variant      | Image ARI | Image mBO | Config                             |
-|-------------|--------------------|-----------|-----------|------------------------------------|
-| COCO        | ViT-B/14, DINOv2   | 45.6      | 29.6      | dinosaur/coco_base14_dinov2.yml    |
+| Dataset | Model Variant    | Image ARI | Image mBO | Config                           | Checkpoint                                                                                             |
+|---------|------------------|-----------|-----------|----------------------------------|--------------------------------------------------------------------------------------------------------|
+| COCO    | ViT-B/14, DINOv2 | 45.6      | 29.6      | dinosaur/coco_base14_dinov2.yml  | [Checkpoint](https://huggingface.co/andriizadaianchuk/dinosaur_dinov2/resolve/main/coco_dinosaur_base14_dinov2.ckpt) |
 
 ## Citation
 

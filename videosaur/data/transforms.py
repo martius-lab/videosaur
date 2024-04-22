@@ -263,6 +263,7 @@ class ToTensorInput:
 
 class Normalize:
     def __init__(self, dataset_type: str, mean, std):
+        print(dataset_type)
         if dataset_type == "image":
             self.norm = tvt.Normalize(mean=mean, std=std)
         elif dataset_type == "video":
